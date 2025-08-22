@@ -21,6 +21,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CatalogService.API", "Backe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OcelotApiGateway", "ApiGateways\OcelotApiGateway\OcelotApiGateway.csproj", "{7341DF40-7468-4EB6-AB12-630AB512471D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopFlix.Web", "FrontendServices\eShopFlix.Web\eShopFlix.Web.csproj", "{B22EA902-3E1A-4988-A484-EFA65DF03DAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eShopFlix.Support", "FrontendServices\eShopFlix.Support\eShopFlix.Support.csproj", "{65BDCB6C-78F9-499B-BDD1-F023B247B80B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,14 @@ Global
 		{7341DF40-7468-4EB6-AB12-630AB512471D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7341DF40-7468-4EB6-AB12-630AB512471D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7341DF40-7468-4EB6-AB12-630AB512471D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B22EA902-3E1A-4988-A484-EFA65DF03DAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B22EA902-3E1A-4988-A484-EFA65DF03DAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B22EA902-3E1A-4988-A484-EFA65DF03DAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B22EA902-3E1A-4988-A484-EFA65DF03DAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{65BDCB6C-78F9-499B-BDD1-F023B247B80B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{65BDCB6C-78F9-499B-BDD1-F023B247B80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{65BDCB6C-78F9-499B-BDD1-F023B247B80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{65BDCB6C-78F9-499B-BDD1-F023B247B80B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -58,6 +70,8 @@ Global
 		{6BE243E8-8640-44B4-8178-71B16CE5A831} = {EA4DEDE0-8375-4467-B4F4-42EB3F469B8B}
 		{3E8FF1A1-3BC3-4860-A959-C2B7DF98F0B6} = {EA4DEDE0-8375-4467-B4F4-42EB3F469B8B}
 		{7341DF40-7468-4EB6-AB12-630AB512471D} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{B22EA902-3E1A-4988-A484-EFA65DF03DAF} = {D9B9E59C-0D9A-4952-AE5C-EF16A0CAED2D}
+		{65BDCB6C-78F9-499B-BDD1-F023B247B80B} = {D9B9E59C-0D9A-4952-AE5C-EF16A0CAED2D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {59138E75-3939-4D2C-8207-4EFC3B2A4B18}

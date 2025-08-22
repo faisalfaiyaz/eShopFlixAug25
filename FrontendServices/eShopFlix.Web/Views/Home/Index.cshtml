@@ -1,0 +1,30 @@
+﻿@model IEnumerable<ProductModel>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="text-center my-4">Our Products</h1>
+
+@if (Model != null)
+{
+    <div class="row g-4">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-3">
+                <div class="card shadow-sm h-100">
+                    <img src="@product.ImageUrl"
+                         alt="@product.Name"
+                         class="card-img-top img-fluid p-3"
+                         style="height: 200px; object-fit: contain; background-color: #f8f9fa;" />
+
+
+                    <div class="card-body">
+                        <h5 class="card-title">@product.Name</h5>
+                        <p class="card-text">@product.Description</p>
+                        <p class="fw-bold text-primary">Price: @product.UnitPrice.ToString("C")</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
