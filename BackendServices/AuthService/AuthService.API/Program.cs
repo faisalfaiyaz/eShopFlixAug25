@@ -1,6 +1,9 @@
+using AuthService.Infrastructure;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+ServiceRegistration.RegisterServices(builder.Services, builder.Configuration);
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
