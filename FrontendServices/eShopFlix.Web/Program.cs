@@ -1,4 +1,5 @@
 using eShopFlix.Web.HttpClients;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,6 +19,25 @@ builder.Services.AddScoped<CatalogServiceClient>(sp =>
     return new CatalogServiceClient(httpClient);
 });
 
+builder.Services.AddScoped<AuthServiceClient>(sp =>
+{
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient("HttpClient");
+    return new AuthServiceClient(httpClient);
+
+});
+
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie( opt =>
+    {
+        opt.Cookie.Name = "eShopFlixCookie";
+        opt.LoginPath = "/account/login";
+        opt.AccessDeniedPath = "/account/accessdenied";
+        opt.SlidingExpiration = true;
+        opt.ExpireTimeSpan = TimeSpan.FromMinutes(60);
+    });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -31,9 +51,15 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
+
+app.MapControllerRoute(
+           name: "areas",
+           pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}"
+         );
 
 app.MapControllerRoute(
     name: "default",
