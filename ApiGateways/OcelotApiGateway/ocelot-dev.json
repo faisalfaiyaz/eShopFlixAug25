@@ -28,7 +28,7 @@
         "Roles": "Admin"
       },
       "UpstreamPathTemplate": "/product/{everything}",
-      "UpstreamHttpMethod": [ "Get", "Post" ]
+      "UpstreamHttpMethod": [ "Get", "Post", "Put", "Delete" ]
     },
     {
       "DownstreamPathTemplate": "/api/auth/{everything}",
