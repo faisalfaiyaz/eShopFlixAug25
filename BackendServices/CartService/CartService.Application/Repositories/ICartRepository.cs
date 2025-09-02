@@ -4,12 +4,12 @@ namespace CartService.Application.Repositories;
 
 public interface ICartRepository
 {
-    Cart GetUserCart(long UserId);
-    int GetCartItemCount(long UserId);
-    IEnumerable<CartItem> GetCartItems(long CartId);
-    Cart GetCart(long CartId);
-    Cart AddItem(long CartId, long UserId, CartItem item);
-    int DeleteItem(long CartId, int ItemId);
-    bool MakeInActive(long CartId);
-    int UpdateQuantity(long CartId, int ItemId, int Quantity);
+    Cart GetUserCart(long userId);
+    int GetCartItemCount(long userId);
+    IEnumerable<CartItem> GetCartItems(long cartId);
+    Cart GetCart(long cartId);
+    Cart AddItem(long cartId, long userId, CartItem item);
+    int DeleteItem(long cartId, int itemId);
+    bool MakeInActive(long cartId);
+    int UpdateQuantity(long cartId, int itemId, int quantity);
 }
