@@ -11,25 +11,32 @@ public class CartRepository : ICartRepository
     {
         _db = db;
     }
-    public Cart AddItem(long CartId, long UserId, CartItem item)
+    public Cart AddItem(long cartId, long userId, CartItem item)
     {
         Cart cart = new Cart();
-        if (CartId > 0)
-            cart = _db.Carts.Find(CartId);
-        else
-            cart = _db.Carts.Where(x => x.UserId == UserId && x.IsActive == true).FirstOrDefault();
 
+        // If cartId is provided, find by cartId, else find by userId
+        if (cartId > 0)
+            cart = _db.Carts.Find(cartId);
+        else
+            cart = _db.Carts.FirstOrDefault(c => c.UserId == userId && c.IsActive == true);
+
+
+        // If cart exists, than add Cart-item to it, else create a new cart
         if (cart != null)
         {
-            CartItem cartItem = _db.CartItems.Where(x => x.ItemId == item.ItemId && x.CartId == cart.Id).FirstOrDefault();
+            // Check if item already exists in cart, if yes then update quantity
+            CartItem cartItem = _db.CartItems.FirstOrDefault(c => c.ItemId == item.ItemId && c.CartId == cart.Id);
             if (cartItem != null)
             {
+                // Update quantity of existing item in cart 
                 cartItem.Quantity += item.Quantity;
                 _db.SaveChanges();
                 return cart;
             }
             else
             {
+                // Add new item to cart 
                 cart.CartItems.Add(item);
                 _db.SaveChanges();
                 return cart;
@@ -37,32 +44,45 @@ public class CartRepository : ICartRepository
         }
         else
         {
+            // Create a new cart and add item to it 
             cart = new Cart
             {
-                UserId = UserId,
+                UserId = userId,
                 CreatedDate = DateTime.Now,
                 IsActive = true
             };
+
+            // Add item to cart
             cart.CartItems.Add(item);
+
+            // add cart to database and save changes
             _db.Carts.Add(cart);
             _db.SaveChanges();
             return cart;
         }
     }
 
-    public int DeleteItem(long CartId, int ItemId)
+    public int DeleteItem(long cartId, int itemId)
     {
-        return _db.CartItems.Where(x => x.Id == ItemId && x.CartId == CartId).ExecuteDelete();
+        // Using ExecuteDelete for better performance instead of fetching the entity and then deleting it
+        return _db.CartItems.Where(ci => ci.Id == itemId && ci.CartId == cartId).ExecuteDelete();
     }
 
-    public Cart GetCart(long CartId)
+    public Cart GetCart(long cartId)
     {
-        return _db.Carts.Include(x => x.CartItems).Where(x => x.Id == CartId && x.IsActive).FirstOrDefault();
+        // Include CartItems when fetching the cart details for better performance and to avoid lazy loading issues later on 
+        return _db.Carts.Include(c => c.CartItems)
+                        .FirstOrDefault(c => c.Id == cartId && c.IsActive)!;
     }
 
-    public int GetCartItemCount(long UserId)
+    public int GetCartItemCount(long userId)
     {
-        Cart cart = _db.Carts.Where(c => c.UserId == UserId && c.IsActive).Include(c => c.CartItems).FirstOrDefault();
+        // Include CartItems when fetching the cart details for better performance and to avoid lazy loading issues later on
+        Cart cart = _db.Carts.Include(c => c.CartItems)
+                             .FirstOrDefault(c => c.UserId == userId && c.IsActive)!;
+
+
+        // If cart exists, then return the count of items in the cart, else return 0
         if (cart != null)
         {
             int counter = cart.CartItems.Sum(c => c.Quantity);
@@ -71,21 +91,26 @@ public class CartRepository : ICartRepository
         return 0;
     }
 
-    public IEnumerable<CartItem> GetCartItems(long CartId)
+    public IEnumerable<CartItem> GetCartItems(long cartId)
     {
-        return _db.CartItems.Where(x => x.CartId == CartId).ToList();
+        // Fetch all cart items for the given cartId
+        return _db.CartItems.Where(ci => ci.CartId == cartId).ToList();
     }
 
-    public Cart GetUserCart(long UserId)
+    public Cart GetUserCart(long userId)
     {
-        return _db.Carts.Include(x => x.CartItems).Where(x => x.UserId == UserId && x.IsActive == true).FirstOrDefault();
+        // Include CartItems when fetching the cart details for better performance and to avoid lazy loading issues later on
+        return _db.Carts.Include(c => c.CartItems)
+                        .FirstOrDefault(c => c.UserId == userId && c.IsActive == true)!;
     }
 
-    public bool MakeInActive(long CartId)
+    public bool MakeInActive(long cartId)
     {
-        Cart cart = _db.Carts.Find(CartId);
+        // Find cart by cartId and mark it as inactive
+        Cart cart = _db.Carts.Find(cartId)!;
         if (cart != null)
         {
+            // Mark cart as inactive
             cart.IsActive = false;
             _db.SaveChanges();
             return true;
@@ -93,12 +118,14 @@ public class CartRepository : ICartRepository
         return false;
     }
 
-    public int UpdateQuantity(long CartId, int ItemId, int Quantity)
+    public int UpdateQuantity(long cartId, int itemId, int quantity)
     {
-        CartItem cartItem = _db.CartItems.Where(x => x.Id == ItemId && x.CartId == CartId).FirstOrDefault();
+        // Find cart item by itemId and cartId, if found then update the quantity
+        CartItem cartItem = _db.CartItems.FirstOrDefault(ci => ci.Id == itemId && ci.CartId == cartId)!;
         if (cartItem != null)
         {
-            cartItem.Quantity += Quantity;
+            // Update quantity of existing item in cart
+            cartItem.Quantity += quantity;
             _db.SaveChanges();
             return 1;
         }
