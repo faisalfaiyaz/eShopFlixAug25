@@ -27,6 +27,13 @@ builder.Services.AddScoped<AuthServiceClient>(sp =>
 
 });
 
+builder.Services.AddScoped<CartServiceClient>(sp =>
+{
+    var httpClientFactory = sp.GetRequiredService<IHttpClientFactory>();
+    var httpClient = httpClientFactory.CreateClient("HttpClient");
+    return new CartServiceClient(httpClient);
+});
+
 builder.Services
     .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie( opt =>
